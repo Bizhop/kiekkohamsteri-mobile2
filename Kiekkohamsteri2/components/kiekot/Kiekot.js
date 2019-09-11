@@ -1,18 +1,20 @@
 
 import React, { Component } from 'react'
-import { View, Text, FlatList, StyleSheet } from 'react-native'
+import { View, Text, FlatList, StyleSheet, ActivityIndicator } from 'react-native'
 import { connect } from 'react-redux'
 
 import { getDiscs } from './reducer'
 
-const Kiekot = props => (
-    <FlatList
+const Kiekot = props => {
+    return props.loading ? 
+    ( <ActivityIndicator size="large" /> ) :
+    ( <FlatList
         styles={styles.container}
         data={props.kiekot}
         renderItem={Item}
         keyExtractor={item => item.id.toString()}
-    />
-)
+    /> )
+}
 
 const Item = ({ item }) => (
     <View style={styles.item}>
@@ -32,7 +34,8 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-    kiekot: state.kiekot
+    kiekot: state.kiekot,
+    loading: state.loading
 })
 
 const mapDispatchToProps = dispatch => ({
