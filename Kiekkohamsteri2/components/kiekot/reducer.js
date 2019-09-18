@@ -1,10 +1,11 @@
 export const GET_DISCS = 'kiekot/GET'
 export const GET_DISCS_SUCCESS = 'kiekot/GET_SUCCESS'
-export const GET_DISCS_FAILURE = 'kiekot/GET_FAILURE'
+export const GET_DISCS_FAIL = 'kiekot/GET_FAIL'
 
 const initialState = {
-    kiekot: [],
-    loading: false
+    kiekot: null,
+    loading: false,
+    error: null
 }
 
 const reducer = (state = initialState, action) => {
@@ -12,15 +13,17 @@ const reducer = (state = initialState, action) => {
         case GET_DISCS:
             return { 
                 ...state,
-                loading: true 
+                loading: true,
+                error: null
             }
         case GET_DISCS_SUCCESS:
             return {
                 ...state,
                 loading: false,
-                kiekot: action.payload.data.content
+                kiekot: action.payload.data,
+                error: null
             }
-        case GET_DISCS_FAILURE:
+        case GET_DISCS_FAIL:
             return {
                 ...state,
                 loading: false,
@@ -32,11 +35,14 @@ const reducer = (state = initialState, action) => {
     }
 }
 
-export const getDiscs = () => ({
+export const getDiscs = token => ({
     type: GET_DISCS,
     payload: {
         request: {
-            url: '/kiekot'
+            url: '/kiekot?size=1000&sort=mold.valmistaja.valmistaja,asc&sort=mold.nopeus,asc&sort=mold.kiekko,asc&sort=muovi.muovi,asc',
+            headers: {
+                'Authorization': token
+            }
         }
     }
 })

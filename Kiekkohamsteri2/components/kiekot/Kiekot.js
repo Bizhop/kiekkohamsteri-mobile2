@@ -1,19 +1,40 @@
-
-import React, { Component } from 'react'
-import { View, Text, FlatList, StyleSheet, ActivityIndicator } from 'react-native'
+import React from 'react'
+import { View, Text, FlatList, StyleSheet, ActivityIndicator, Button } from 'react-native'
 import { connect } from 'react-redux'
 
 import { getDiscs } from './reducer'
+import SyncStorage from 'sync-storage'
 
 const Kiekot = props => {
-    return props.loading ? 
-    ( <ActivityIndicator size="large" /> ) :
-    ( <FlatList
-        styles={styles.container}
-        data={props.kiekot}
-        renderItem={Item}
-        keyExtractor={item => item.id.toString()}
-    /> )
+    if(props.error) {
+        return <View style={styles.container}><Text>{props.error}</Text></View>
+    }
+    else if(props.loading) {
+        return <View style={styles.container}><ActivityIndicator size="large" /></View>
+    }
+    else if(props.kiekot == null) {
+        return (
+            <View>
+                <Button 
+                    title="Hae kiekot"
+                    onPress={() => props.myDiscs()}
+                />
+            </View>
+        )
+    }
+    else {
+        return (
+            <View style={styles.container}>
+                <Text>Kiekot: {props.kiekot.totalElements}</Text>
+                <FlatList
+                    styles={styles.container}
+                    data={props.kiekot.content}
+                    renderItem={Item}
+                    keyExtractor={item => item.id.toString()}
+                />
+            </View>
+        )
+    }
 }
 
 const Item = ({ item }) => (
@@ -35,11 +56,13 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
     kiekot: state.kiekot,
-    loading: state.loading
+    loading: state.loading,
+    error: state.error,
+    token: state.token
 })
 
 const mapDispatchToProps = dispatch => ({
-    getDiscs: dispatch(getDiscs())
+    myDiscs: () => dispatch(getDiscs(SyncStorage.get('token')))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Kiekot)
