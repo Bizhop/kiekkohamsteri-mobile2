@@ -1,13 +1,14 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
-import { createStore, applyMiddleware } from 'redux'
+import { createStore, applyMiddleware, combineReducers } from 'redux'
 import { Provider } from 'react-redux'
 import axios from 'axios'
 import axiosMiddleware from 'redux-axios-middleware'
 import SyncStorage from 'sync-storage'
 
 import kiekkoReducer from './components/kiekot/reducer'
-import Kiekot from './components/kiekot/Kiekot'
+import homeReducer from './components/home/reducer'
+import Home from './components/home/Home'
 import secret from './secret'
 
 const client = axios.create({
@@ -15,7 +16,13 @@ const client = axios.create({
   responseType: 'json'
 })
 
-const store = createStore(kiekkoReducer, applyMiddleware(axiosMiddleware(client)))
+const store = createStore(
+  combineReducers({
+    kiekko: kiekkoReducer,
+    home: homeReducer
+  }),
+  applyMiddleware(axiosMiddleware(client))
+)
 
 const App = () => {
   SyncStorage.init()
@@ -26,7 +33,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <View style={styles.container}>
-        <Kiekot />
+        <Home />
       </View>
     </Provider>
   )

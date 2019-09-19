@@ -27,7 +27,7 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 loading: false,
-                error: 'Kiekkojen haku epäonnistui'
+                error: 'Kiekkojen haku epäonnistui: ' + action.error.response.status
             }
         default:
             return state
