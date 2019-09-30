@@ -7,10 +7,15 @@ import { login } from './reducer'
 
 const Home = props => {
     _setupGoogleSignin()
-    return props.user ? 
+    const user = props.user
+    return user ? 
         (
             <View>
-                <Text>Email: {props.user.email}</Text>
+                <Text>{user.username}</Text>
+                <Text>{user.etunimi} {user.sukunimi} #{user.pdga_num}</Text>
+                <Text>{user.email}</Text>
+                <Text>Kiekkoja: {user.discCount} ({user.publicDiscCount ? 'julkinen' : 'yksityinen'}) </Text>
+                <Text>Julkinen listaus: {user.publicList ? 'Kyllä' : 'Ei'}</Text>
             </View>
         ) : (
             <View>
@@ -34,7 +39,6 @@ _signIn = async props =>  {
     try {
         await GoogleSignin.hasPlayServices()
         const userInfo = await GoogleSignin.signIn()
-        console.log(userInfo)
         props.backendLogin(userInfo)
     }
     catch (error) {

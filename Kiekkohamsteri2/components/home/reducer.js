@@ -1,3 +1,6 @@
+import SyncStorage from 'sync-storage'
+import { dissoc } from 'ramda'
+
 export const SETUP_GOOGLE_SIGNIN = 'home/SETUP_GOOGLE_SIGNIN'
 export const LOGIN = 'home/LOGIN'
 export const LOGIN_SUCCESS = 'home/LOGIN_SUCCESS'
@@ -13,19 +16,21 @@ const reducer = (state = initialState, action) => {
         case LOGIN:
             return {
                 ...state,
-                user: action.userInfo == null ? null : action.userInfo.user,
+                user: null,
                 error: null
             }
         case LOGIN_SUCCESS:
+            SyncStorage.set('token', action.payload.data.jwt)
             return {
                 ...state,
-                user: action.payload.data.user,
+                user: dissoc('jwt', action.payload.data),
                 error: null
             }
         case LOGIN_FAIL:
+            SyncStorage.remove('token')
             return {
                 ...state,
-                user:null,
+                user: null,
                 error: 'Kirjautuminen epäonnistui: ' + action.error.response.status
             }
         default: return state
@@ -34,7 +39,14 @@ const reducer = (state = initialState, action) => {
 
 export const login = userInfo => ({
     type: LOGIN,
-    userInfo
+    payload: {
+        request: {
+            url: '/auth/login',
+            headers: {
+                'Authorization': userInfo.idToken
+            }
+        }
+    }
 })
 
 export default reducer

@@ -9,7 +9,6 @@ import SyncStorage from 'sync-storage'
 import kiekkoReducer from './components/kiekot/reducer'
 import homeReducer from './components/home/reducer'
 import Home from './components/home/Home'
-import secret from './secret'
 
 const client = axios.create({
   baseURL: 'https://kiekkohamsteri.herokuapp.com/api',
@@ -27,7 +26,6 @@ const store = createStore(
 const App = () => {
   SyncStorage.init()
     .then(data => {
-      SyncStorage.set('token', secret)
       console.log('Storage ready!', data)
     })
   return (
