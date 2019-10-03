@@ -1,12 +1,12 @@
 import React from 'react'
 import { Text, View } from 'react-native'
+import { Button } from 'react-native-elements'
 import { connect } from 'react-redux'
-import { GoogleSignin, GoogleSigninButton } from 'react-native-google-signin';
+import Login from './Login'
 
-import { login } from './reducer'
+import { login, logout } from './reducer'
 
 const Home = props => {
-    _setupGoogleSignin()
     const user = props.user
     return user ? 
         (
@@ -16,34 +16,17 @@ const Home = props => {
                 <Text>{user.email}</Text>
                 <Text>Kiekkoja: {user.discCount} ({user.publicDiscCount ? 'julkinen' : 'yksityinen'}) </Text>
                 <Text>Julkinen listaus: {user.publicList ? 'Kyllä' : 'Ei'}</Text>
+                <Button
+                    raised
+                    title="Kirjaudu ulos"
+                    onPress={() => props.logout()}
+                />
             </View>
         ) : (
             <View>
-                <GoogleSigninButton
-                    style={{ width: 192, height: 48 }}
-                    size={GoogleSigninButton.Size.Wide}
-                    color={GoogleSigninButton.Color.Dark}
-                    onPress={() => _signIn(props)} />
+                <Login backendLogin={props.backendLogin} />
             </View>
         )
-}
-
-_setupGoogleSignin = () => {
-    GoogleSignin.configure({
-        webClientId: "595234643015-bgemfas3rb4kqc7sfourtuos5uusii33.apps.googleusercontent.com",
-        offlineAccess: false
-    })
-}
-
-_signIn = async props =>  {
-    try {
-        await GoogleSignin.hasPlayServices()
-        const userInfo = await GoogleSignin.signIn()
-        props.backendLogin(userInfo)
-    }
-    catch (error) {
-        console.log(error)
-    }
 }
 
 const mapStateToProps = state => ({
@@ -52,7 +35,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    backendLogin: message => dispatch(login(message))
+    backendLogin: message => dispatch(login(message)),
+    logout: () => dispatch(logout())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home)

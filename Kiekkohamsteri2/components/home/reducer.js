@@ -1,10 +1,10 @@
 import SyncStorage from 'sync-storage'
 import { dissoc } from 'ramda'
 
-export const SETUP_GOOGLE_SIGNIN = 'home/SETUP_GOOGLE_SIGNIN'
 export const LOGIN = 'home/LOGIN'
 export const LOGIN_SUCCESS = 'home/LOGIN_SUCCESS'
 export const LOGIN_FAIL = 'home/LOGIN_FAIL'
+export const LOGOUT = 'home/LOGOUT'
 
 const initialState = {
     user: null,
@@ -33,6 +33,13 @@ const reducer = (state = initialState, action) => {
                 user: null,
                 error: 'Kirjautuminen epäonnistui: ' + action.error.response.status
             }
+        case LOGOUT:
+            SyncStorage.remove('token')
+            return {
+                ...state,
+                user: null,
+                error: null
+            }
         default: return state
     }
 }
@@ -47,6 +54,11 @@ export const login = userInfo => ({
             }
         }
     }
+})
+
+export const logout = () => ({
+    type: LOGOUT,
+    payload: {}
 })
 
 export default reducer
