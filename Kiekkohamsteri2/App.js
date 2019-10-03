@@ -1,26 +1,25 @@
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
 import { Provider } from 'react-redux'
+import { createAppContainer } from 'react-navigation'
+import { createBottomTabNavigator } from 'react-navigation-tabs'
 
 import Home from './components/home/Home'
+import Kiekot from './components/kiekot/Kiekot'
 import { store } from './store'
+
+const Tabs = createBottomTabNavigator({
+    Home: Home,
+    Kiekot: Kiekot
+})
+
+const AppContainer = createAppContainer(Tabs)
 
 const App = () => {
   return (
     <Provider store={store}>
-      <View style={styles.container}>
-        <Home />
-      </View>
+        <AppContainer />
     </Provider>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    marginTop: 50
-  }
-})
 
 export default App

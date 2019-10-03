@@ -2,9 +2,11 @@ import React from 'react'
 import { Text, View } from 'react-native'
 import { Button } from 'react-native-elements'
 import { connect } from 'react-redux'
-import Login from './Login'
+import { path } from 'ramda'
+import SyncStorage from 'sync-storage'
 
-import { login, logout } from './reducer'
+import Login from './Login'
+import { login, logout, myDetails } from './reducer'
 
 const Home = props => {
     const user = props.user
@@ -30,8 +32,8 @@ const Home = props => {
 }
 
 const mapStateToProps = state => ({
-    user: state.home.user,
-    error: state.home.error
+    user: path(['home', 'user'], state),
+    error: path(['home', 'error'], state)
 })
 
 const mapDispatchToProps = dispatch => ({

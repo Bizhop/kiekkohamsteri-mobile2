@@ -35,13 +35,13 @@ const reducer = (state = initialState, action) => {
     }
 }
 
-export const getDiscs = token => ({
+export const getDiscs = params => ({
     type: GET_DISCS,
     payload: {
         request: {
             url: '/kiekot?size=1000&sort=mold.valmistaja.valmistaja,asc&sort=mold.nopeus,asc&sort=mold.kiekko,asc&sort=muovi.muovi,asc',
             headers: {
-                'Authorization': token
+                'Authorization': params.token
             }
         }
     }

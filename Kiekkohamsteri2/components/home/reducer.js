@@ -1,6 +1,9 @@
 import SyncStorage from 'sync-storage'
 import { dissoc } from 'ramda'
 
+export const MY_DETAILS = 'home/MY_DETAILS'
+export const MY_DETAILS_SUCCESS = 'home/MY_DETAILS_SUCCESS'
+export const MY_DETAILS_FAIL = 'home/MY_DETAILS_FAIL'
 export const LOGIN = 'home/LOGIN'
 export const LOGIN_SUCCESS = 'home/LOGIN_SUCCESS'
 export const LOGIN_FAIL = 'home/LOGIN_FAIL'
@@ -33,6 +36,13 @@ const reducer = (state = initialState, action) => {
                 user: null,
                 error: 'Kirjautuminen epäonnistui: ' + action.error.response.status
             }
+        case MY_DETAILS_SUCCESS:
+            return {
+                ...state,
+                user: dissoc('jwt', action.payload.data),
+                error: null
+            }
+        case MY_DETAILS_FAIL:
         case LOGOUT:
             SyncStorage.remove('token')
             return {
@@ -59,6 +69,18 @@ export const login = userInfo => ({
 export const logout = () => ({
     type: LOGOUT,
     payload: {}
+})
+
+export const myDetails = params => ({
+    type: MY_DETAILS,
+    payload: {
+        request: {
+            url: '/user/me',
+            headers: {
+                'Authorization': params.token
+            }
+        }
+    }
 })
 
 export default reducer
