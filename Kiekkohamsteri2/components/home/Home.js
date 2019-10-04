@@ -6,7 +6,9 @@ import { path } from 'ramda'
 import SyncStorage from 'sync-storage'
 
 import Login from './Login'
-import { login, logout, myDetails } from './reducer'
+import NavButton from '../shared/NavButton'
+import { login, logout } from './reducer'
+import { getDiscs } from '../kiekot/reducer'
 
 const Home = props => {
     const user = props.user
@@ -18,6 +20,12 @@ const Home = props => {
                 <Text>{user.email}</Text>
                 <Text>Kiekkoja: {user.discCount} ({user.publicDiscCount ? 'julkinen' : 'yksityinen'}) </Text>
                 <Text>Julkinen listaus: {user.publicList ? 'Kyllä' : 'Ei'}</Text>
+                <NavButton 
+                    action={getDiscs}
+                    params={{token: SyncStorage.get('token')}}
+                    destination="Kiekot"
+                    title="Hae kiekot"
+                />
                 <Button
                     raised
                     title="Kirjaudu ulos"

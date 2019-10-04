@@ -1,18 +1,23 @@
 import React from 'react'
 import { Provider } from 'react-redux'
 import { createAppContainer } from 'react-navigation'
-import { createBottomTabNavigator } from 'react-navigation-tabs'
+import { createStackNavigator } from 'react-navigation-stack'
 
 import Home from './components/home/Home'
 import Kiekot from './components/kiekot/Kiekot'
 import { store } from './store'
 
-const Tabs = createBottomTabNavigator({
+const Nav = createStackNavigator(
+  {
     Home: Home,
     Kiekot: Kiekot
-})
+  },
+  {
+    initialRouteName: 'Home',
+  }
+)
 
-const AppContainer = createAppContainer(Tabs)
+const AppContainer = createAppContainer(Nav)
 
 const App = () => {
   return (

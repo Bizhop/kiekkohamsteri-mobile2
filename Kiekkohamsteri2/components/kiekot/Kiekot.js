@@ -27,10 +27,6 @@ const InsideView = ({props}) => {
     else return (
         <View>
             {props.error && <Text>{props.error}</Text>}
-            <Button 
-                title="Hae kiekot"
-                onPress={() => props.myDiscs()}
-            />
         </View>
     )
 }
