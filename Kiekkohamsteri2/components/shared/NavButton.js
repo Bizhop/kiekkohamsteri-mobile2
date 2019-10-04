@@ -9,7 +9,6 @@ class NavButton extends React.Component {
     }
 
     execute() {
-        console.log(this.props)
         this.props.dispatch(this.props.action(this.props.params))
         this.props.navigation.navigate(this.props.destination)
     }

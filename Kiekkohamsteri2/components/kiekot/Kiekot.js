@@ -1,10 +1,13 @@
 import React from 'react'
-import { View, Text, FlatList, StyleSheet, ActivityIndicator, Button } from 'react-native'
+import { View, Text, FlatList, ActivityIndicator } from 'react-native'
+import { ListItem } from 'react-native-elements'
 import { connect } from 'react-redux'
 import { path } from 'ramda'
 import SyncStorage from 'sync-storage'
 
 import { getDiscs } from './reducer'
+import styles from '../shared/styles'
+import { discBasics, discStats, imagesUrl } from '../shared/text'
 
 const Kiekot = props => (
     <View style={styles.container}>
@@ -32,21 +35,13 @@ const InsideView = ({props}) => {
 }
 
 const Item = ({ item }) => (
-    <View style={styles.item}>
-        <Text>{item.mold}</Text>
-    </View>
+    <ListItem
+        bottomDivider
+        title={discBasics(item)}
+        subtitle={discStats(item)}
+        leftAvatar={{ source: { uri: `${imagesUrl}t_lista/${item.kuva}` }}}
+    />
 )
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1
-    },
-    item: {
-        padding: 16,
-        borderBottomWidth: 1,
-        borderBottomColor: '#ccc'
-    }
-});
 
 const mapStateToProps = state => ({
     kiekot: path(['kiekko', 'kiekot'], state),
