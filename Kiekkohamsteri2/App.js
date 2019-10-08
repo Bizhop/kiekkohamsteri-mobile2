@@ -10,11 +10,11 @@ import { store } from './store'
 const Nav = createStackNavigator(
   {
     Home: Home,
-    Kiekot: Kiekot
+    Kiekot: Kiekot,
   },
   {
     initialRouteName: 'Home',
-  }
+  },
 )
 
 const AppContainer = createAppContainer(Nav)
@@ -22,7 +22,7 @@ const AppContainer = createAppContainer(Nav)
 const App = () => {
   return (
     <Provider store={store}>
-        <AppContainer />
+      <AppContainer />
     </Provider>
   )
 }

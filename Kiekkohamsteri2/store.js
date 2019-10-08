@@ -6,14 +6,14 @@ import kiekkoReducer from './components/kiekot/reducer'
 import homeReducer from './components/home/reducer'
 
 const client = axios.create({
-    baseURL: 'https://kiekkohamsteri.herokuapp.com/api',
-    responseType: 'json'
+  baseURL: 'https://kiekkohamsteri.herokuapp.com/api',
+  responseType: 'json',
 })
-  
+
 export const store = createStore(
-    combineReducers({
-      kiekko: kiekkoReducer,
-      home: homeReducer
-    }),
-    applyMiddleware(axiosMiddleware(client))
+  combineReducers({
+    kiekko: kiekkoReducer,
+    home: homeReducer,
+  }),
+  applyMiddleware(axiosMiddleware(client)),
 )

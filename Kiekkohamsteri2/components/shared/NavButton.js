@@ -4,24 +4,18 @@ import { connect } from 'react-redux'
 import { withNavigation } from 'react-navigation'
 
 class NavButton extends React.Component {
-    constructor(props) {
-        super(props)
-    }
+  constructor(props) {
+    super(props)
+  }
 
-    execute() {
-        this.props.dispatch(this.props.action(this.props.params))
-        this.props.navigation.navigate(this.props.destination)
-    }
+  execute() {
+    this.props.dispatch(this.props.action(this.props.params))
+    this.props.navigation.navigate(this.props.destination)
+  }
 
-    render() {
-        return (
-            <Button
-                raised
-                title={this.props.title}
-                onPress={() => this.execute()}
-            />
-        )
-    }
+  render() {
+    return <Button raised title={this.props.title} onPress={() => this.execute()} />
+  }
 }
 
 export default connect()(withNavigation(NavButton))

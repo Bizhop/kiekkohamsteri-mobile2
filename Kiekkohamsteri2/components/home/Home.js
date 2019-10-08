@@ -11,42 +11,44 @@ import { login, logout } from './reducer'
 import { getDiscs } from '../kiekot/reducer'
 
 const Home = props => {
-    const user = props.user
-    return user ? 
-        (
-            <View>
-                <Text>{user.username}</Text>
-                <Text>{user.etunimi} {user.sukunimi} #{user.pdga_num}</Text>
-                <Text>{user.email}</Text>
-                <Text>Kiekkoja: {user.discCount} ({user.publicDiscCount ? 'julkinen' : 'yksityinen'}) </Text>
-                <Text>Julkinen listaus: {user.publicList ? 'Kyllä' : 'Ei'}</Text>
-                <NavButton 
-                    action={getDiscs}
-                    params={{token: SyncStorage.get('token')}}
-                    destination="Kiekot"
-                    title="Hae kiekot"
-                />
-                <Button
-                    raised
-                    title="Kirjaudu ulos"
-                    onPress={() => props.logout()}
-                />
-            </View>
-        ) : (
-            <View>
-                <Login backendLogin={props.backendLogin} />
-            </View>
-        )
+  const user = props.user
+  return user ? (
+    <View>
+      <Text>{user.username}</Text>
+      <Text>
+        {user.etunimi} {user.sukunimi} #{user.pdga_num}
+      </Text>
+      <Text>{user.email}</Text>
+      <Text>
+        Kiekkoja: {user.discCount} ({user.publicDiscCount ? 'julkinen' : 'yksityinen'}){' '}
+      </Text>
+      <Text>Julkinen listaus: {user.publicList ? 'Kyllä' : 'Ei'}</Text>
+      <NavButton
+        action={getDiscs}
+        params={{ token: SyncStorage.get('token') }}
+        destination="Kiekot"
+        title="Hae kiekot"
+      />
+      <Button raised title="Kirjaudu ulos" onPress={() => props.logout()} />
+    </View>
+  ) : (
+    <View>
+      <Login backendLogin={props.backendLogin} />
+    </View>
+  )
 }
 
 const mapStateToProps = state => ({
-    user: path(['home', 'user'], state),
-    error: path(['home', 'error'], state)
+  user: path(['home', 'user'], state),
+  error: path(['home', 'error'], state),
 })
 
 const mapDispatchToProps = dispatch => ({
-    backendLogin: message => dispatch(login(message)),
-    logout: () => dispatch(logout())
+  backendLogin: message => dispatch(login(message)),
+  logout: () => dispatch(logout()),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Home)
