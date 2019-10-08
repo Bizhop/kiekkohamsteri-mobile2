@@ -8,7 +8,7 @@ import { myDetails } from './components/home/reducer'
 
 AppRegistry.registerComponent(appName, () => App)
 SyncStorage.init()
-    .then(data => {
+    .then(() => {
       store.dispatch(myDetails({ token: SyncStorage.get('token') }))
 })
 GoogleSignin.configure({

@@ -1,7 +1,7 @@
 import React from "react";
 import { GoogleSignin, GoogleSigninButton } from 'react-native-google-signin';
 
-export default class Login extends React.Component {
+export default class Login extends React.Component{
     constructor(props) {
         super(props)
     }

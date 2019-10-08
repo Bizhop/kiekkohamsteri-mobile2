@@ -4,7 +4,10 @@
         "es6": true,
         "node": true
     },
-    "extends": "eslint:recommended",
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended"
+    ],
     "globals": {
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly"
@@ -20,5 +23,11 @@
         "react"
     ],
     "rules": {
+        "react/prop-types": 0
+    },
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
     }
 }
