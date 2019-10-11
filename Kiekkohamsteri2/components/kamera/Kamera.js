@@ -1,53 +1,63 @@
 import React from 'react'
-import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View, Dimensions } from 'react-native'
+import Image from 'react-native-scalable-image'
 import { RNCamera } from 'react-native-camera'
 import { connect } from 'react-redux'
 import { path } from 'ramda'
 
-import { showImage, cameraReady } from './reducer'
+import { showImage } from './reducer'
 
 const Kamera = props => (
-      <View style={styles.container}>
-        {props.image ?
-          <View style={styles.container}>
-            <Image 
-              source={{ uri: `data:image/png;base64,${props.image}` }}
-              style={{ height: 200, width: 200 }}
-            />
-          </View>
-          :
-          <RNCamera
-            ref={ref => {
-              if(ref != null && !props.isCameraReady) {
-                props.cameraReady(ref)
-              }
-            }}
-            style={styles.preview}
-            type={RNCamera.Constants.Type.back}
-            flashMode={RNCamera.Constants.FlashMode.on}
-            androidCameraPermissionOptions={{
-              title: 'Permission to use camera',
-              message: 'We need your permission to use your camera',
-              buttonPositive: 'Ok',
-              buttonNegative: 'Cancel',
-            }}
-            captureAudio={false}
-          /> }
-        {props.isCameraReady && 
-          <View style={styles.button}>
-            <TouchableOpacity onPress={() => takePicture({camera: props.camera, showImage: props.showImage})} style={styles.capture}>
-              <Text style={{ fontSize: 14 }}> SNAP </Text>
-            </TouchableOpacity>
-          </View>
-        }
-      </View>
-    )
+  <View style={styles.container}>
+    {props.image ? (
+      <Image
+        width={Dimensions.get('window').width}
+        source={{ uri: `data:image/png;base64,${props.image}` }}
+      />
+    ) : (
+      <RNCamera
+        style={styles.preview}
+        type={RNCamera.Constants.Type.back}
+        flashMode={RNCamera.Constants.FlashMode.on}
+        androidCameraPermissionOptions={{
+          title: 'Permission to use camera',
+          message: 'We need your permission to use your camera',
+          buttonPositive: 'Ok',
+          buttonNegative: 'Cancel',
+        }}
+        captureAudio={false}
+      >
+        {({ camera, status }) => {
+          if (status !== 'READY') {
+            return <Text>Waiting for camera...</Text>
+          } else {
+            return (
+              <View style={styles.button}>
+                <TouchableOpacity
+                  onPress={() => takePicture({ camera: camera, showImage: props.showImage })}
+                  style={styles.capture}
+                >
+                  <Text style={{ fontSize: 14 }}> SNAP </Text>
+                </TouchableOpacity>
+              </View>
+            )
+          }
+        }}
+      </RNCamera>
+    )}
+  </View>
+)
 
 const takePicture = props => {
-    console.log('taking picture')
-    const options = { quality: 0.5, base64: true, fixOrientation: true, doNotSave: true, orientation: "portrait", width: 100 }
-    props.camera.takePictureAsync(options).then(data => props.showImage(data.base64))
+  const options = {
+    quality: 0.9,
+    base64: true,
+    fixOrientation: true,
+    doNotSave: true,
+    orientation: 'portrait'
   }
+  props.camera.takePictureAsync(options).then(data => props.showImage(data.base64))
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -72,19 +82,19 @@ const styles = StyleSheet.create({
   button: {
     flex: 0,
     flexDirection: 'row',
-    justifyContent: 'center'
-  }
-});
+    justifyContent: 'center',
+  },
+})
 
 const mapStateToProps = state => ({
-  camera: path(['camera', 'camera'], state),
-  isCameraReady: path(['camera', 'isCameraReady'], state),
-  image: path(['camera', 'image'], state)
+  image: path(['camera', 'image'], state),
 })
 
 const mapDispatchToProps = dispatch => ({
-  showImage: base64 => dispatch(showImage({image: base64})),
-  cameraReady: ref => dispatch(cameraReady({ref: ref}))
+  showImage: base64 => dispatch(showImage({ image: base64 })),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Kamera)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Kamera)
