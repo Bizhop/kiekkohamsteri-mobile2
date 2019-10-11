@@ -4,6 +4,7 @@ import axiosMiddleware from 'redux-axios-middleware'
 
 import kiekkoReducer from './components/kiekot/reducer'
 import homeReducer from './components/home/reducer'
+import cameraReducer from './components/kamera/reducer'
 
 const client = axios.create({
   baseURL: 'https://kiekkohamsteri.herokuapp.com/api',
@@ -14,6 +15,7 @@ export const store = createStore(
   combineReducers({
     kiekko: kiekkoReducer,
     home: homeReducer,
+    camera: cameraReducer
   }),
   applyMiddleware(axiosMiddleware(client)),
 )

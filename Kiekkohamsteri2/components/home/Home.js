@@ -9,6 +9,7 @@ import Login from './Login'
 import NavButton from '../shared/NavButton'
 import { login, logout } from './reducer'
 import { getDiscs } from '../kiekot/reducer'
+import { cameraInit } from '../kamera/reducer'
 
 const Home = props => {
   const user = props.user
@@ -28,6 +29,12 @@ const Home = props => {
         params={{ token: SyncStorage.get('token') }}
         destination="Kiekot"
         title="Hae kiekot"
+      />
+      <NavButton
+        action={cameraInit}
+        params={{}}
+        destination="Kamera"
+        title="Kamera"
       />
       <Button raised title="Kirjaudu ulos" onPress={() => props.logout()} />
     </View>

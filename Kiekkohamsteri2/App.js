@@ -5,12 +5,14 @@ import { createStackNavigator } from 'react-navigation-stack'
 
 import Home from './components/home/Home'
 import Kiekot from './components/kiekot/Kiekot'
+import Kamera from './components/kamera/Kamera'
 import { store } from './store'
 
 const Nav = createStackNavigator(
   {
     Home: Home,
     Kiekot: Kiekot,
+    Kamera: Kamera
   },
   {
     initialRouteName: 'Home',
