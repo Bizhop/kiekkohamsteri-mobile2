@@ -15,7 +15,14 @@ class NavButton extends React.Component {
   }
 
   render() {
-    return <Button buttonStyle={styles.button} raised title={this.props.title} onPress={() => this.execute()} />
+    return (
+      <Button
+        buttonStyle={styles.button}
+        raised
+        title={this.props.title}
+        onPress={() => this.execute()}
+      />
+    )
   }
 }
 

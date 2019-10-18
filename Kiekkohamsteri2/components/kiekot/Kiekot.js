@@ -9,11 +9,19 @@ import { getDiscs } from './reducer'
 import styles from '../shared/styles'
 import { discBasics, discStats, imagesUrl } from '../shared/text'
 
-const Kiekot = props => (
-  <View style={styles.container}>
-    <InsideView props={props} />
-  </View>
-)
+class Kiekot extends React.Component {
+  static navigationOptions = {
+    title: 'Kiekot',
+  }
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <InsideView props={this.props} />
+      </View>
+    )
+  }
+}
 
 const InsideView = ({ props }) => {
   if (props.loading) return <ActivityIndicator size="large" />
@@ -24,6 +32,7 @@ const InsideView = ({ props }) => {
         data={props.kiekot.content}
         renderItem={Item}
         keyExtractor={item => item.id.toString()}
+        initialNumToRender={5}
       />
     )
   } else return <View>{props.error && <Text>{props.error}</Text>}</View>

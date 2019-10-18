@@ -8,7 +8,14 @@ class ActionButton extends React.Component {
   }
 
   render() {
-    return <Button buttonStyle={styles.button} raised title={this.props.title} onPress={() => this.props.action()} />
+    return (
+      <Button
+        buttonStyle={styles.button}
+        raised
+        title={this.props.title}
+        onPress={() => this.props.action()}
+      />
+    )
   }
 }
 

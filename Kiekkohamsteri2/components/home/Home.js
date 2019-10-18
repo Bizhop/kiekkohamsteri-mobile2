@@ -12,34 +12,40 @@ import { getDiscs } from '../kiekot/reducer'
 import styles from '../shared/styles'
 import ActionButton from '../shared/ActionButton'
 
-const Home = props => {
-  const user = props.user
-  return user ? (
-    <View style={styles.container}>
-      <Text>{user.username}</Text>
-      <Text>
-        {user.etunimi} {user.sukunimi} #{user.pdga_num}
-      </Text>
-      <Text>{user.email}</Text>
-      <Text>
-        Kiekkoja: {user.discCount} ({user.publicDiscCount ? 'julkinen' : 'yksityinen'}){' '}
-      </Text>
-      <Text>Julkinen listaus: {user.publicList ? 'Kyllä' : 'Ei'}</Text>
-      <NavButton
-        action={getDiscs}
-        params={{ token: SyncStorage.get('token') }}
-        destination="Kiekot"
-        title="Hae kiekot"
-      />
-      <ActionButton title="Ota kuva" action={openCamera} />
-      <ActionButton title="Valitse kuva" action={selectPhoto} />
-      <ActionButton title="Kirjaudu ulos" action={props.logout} />
-    </View>
-  ) : (
-    <View>
-      <Login backendLogin={props.backendLogin} />
-    </View>
-  )
+class Home extends React.Component {
+  static navigationOptions = {
+    title: 'Kiekkohamsteri',
+  }
+
+  render() {
+    const user = this.props.user
+    return user ? (
+      <View style={styles.container}>
+        <Text>{user.username}</Text>
+        <Text>
+          {user.etunimi} {user.sukunimi} #{user.pdga_num}
+        </Text>
+        <Text>{user.email}</Text>
+        <Text>
+          Kiekkoja: {user.discCount} ({user.publicDiscCount ? 'julkinen' : 'yksityinen'}){' '}
+        </Text>
+        <Text>Julkinen listaus: {user.publicList ? 'Kyllä' : 'Ei'}</Text>
+        <NavButton
+          action={getDiscs}
+          params={{ token: SyncStorage.get('token') }}
+          destination="Kiekot"
+          title="Hae kiekot"
+        />
+        <ActionButton title="Ota kuva" action={openCamera} />
+        <ActionButton title="Valitse kuva" action={selectPhoto} />
+        <ActionButton title="Kirjaudu ulos" action={this.props.logout} />
+      </View>
+    ) : (
+      <View>
+        <Login backendLogin={this.props.backendLogin} />
+      </View>
+    )
+  }
 }
 
 const openCamera = () => {

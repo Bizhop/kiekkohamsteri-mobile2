@@ -5,7 +5,8 @@
   "scripts": {
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "format": "prettier --write '**/*.js'"
   },
   "dependencies": {
     "@react-native-community/async-storage": "github:react-native-community/async-storage",
