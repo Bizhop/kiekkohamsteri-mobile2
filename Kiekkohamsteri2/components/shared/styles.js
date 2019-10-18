@@ -9,6 +9,9 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
   },
+  button: {
+    margin: 10,
+  }
 })
 
 export default styles
