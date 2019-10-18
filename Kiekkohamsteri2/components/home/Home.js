@@ -1,6 +1,5 @@
 import React from 'react'
 import { Text, View } from 'react-native'
-import { Button } from 'react-native-elements'
 import { connect } from 'react-redux'
 import { path } from 'ramda'
 import SyncStorage from 'sync-storage'
