@@ -32,7 +32,6 @@ const InsideView = ({ props }) => {
         data={props.kiekot.content}
         renderItem={Item}
         keyExtractor={item => item.id.toString()}
-        initialNumToRender={5}
       />
     )
   } else return <View>{props.error && <Text>{props.error}</Text>}</View>

@@ -13,7 +13,9 @@ class ActionButton extends React.Component {
         buttonStyle={styles.button}
         raised
         title={this.props.title}
-        onPress={() => this.props.action()}
+        onPress={() =>
+          this.props.action({ params: this.props.params, dispatch: this.props.dispatch })
+        }
       />
     )
   }

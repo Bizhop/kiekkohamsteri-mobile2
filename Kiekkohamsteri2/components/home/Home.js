@@ -8,7 +8,7 @@ import ImagePicker from 'react-native-image-crop-picker'
 import Login from './Login'
 import NavButton from '../shared/NavButton'
 import { login, logout } from './reducer'
-import { getDiscs } from '../kiekot/reducer'
+import { getDiscs, newDisc } from '../kiekot/reducer'
 import styles from '../shared/styles'
 import ActionButton from '../shared/ActionButton'
 
@@ -36,8 +36,18 @@ class Home extends React.Component {
           destination="Kiekot"
           title="Hae kiekot"
         />
-        <ActionButton title="Ota kuva" action={openCamera} />
-        <ActionButton title="Valitse kuva" action={selectPhoto} />
+        <ActionButton
+          title="Ota kuva"
+          action={openCamera}
+          dispatch={this.props.newDisc}
+          params={{ token: SyncStorage.get('token') }}
+        />
+        <ActionButton
+          title="Valitse kuva"
+          action={selectPhoto}
+          dispatch={this.props.newDisc}
+          params={{ token: SyncStorage.get('token') }}
+        />
         <ActionButton title="Kirjaudu ulos" action={this.props.logout} />
       </View>
     ) : (
@@ -48,20 +58,26 @@ class Home extends React.Component {
   }
 }
 
-const openCamera = () => {
+const openCamera = params => {
   ImagePicker.openCamera(imageProperties)
     .then(image => {
-      console.log(image)
+      params.dispatch({
+        token: path(['params', 'token'], params),
+        image: image.data,
+      })
     })
     .catch(error => {
       console.log(error)
     })
 }
 
-const selectPhoto = () => {
+const selectPhoto = params => {
   ImagePicker.openPicker(imageProperties)
     .then(image => {
-      console.log(image)
+      params.dispatch({
+        token: path(['params', 'token'], params),
+        image: image.data,
+      })
     })
     .catch(error => {
       console.log(error)
@@ -84,6 +100,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   backendLogin: message => dispatch(login(message)),
   logout: () => dispatch(logout()),
+  newDisc: params => dispatch(newDisc(params)),
 })
 
 export default connect(
